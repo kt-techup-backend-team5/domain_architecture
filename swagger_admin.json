@@ -1,2978 +1,3258 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-      "title": "테크업 쇼핑몰",
-      "description": "테크업 쇼핑몰 API 명세서",
-      "version": "0.0.2"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "테크업 쇼핑몰",
+    "description": "테크업 쇼핑몰 API 명세서",
+    "version": "0.0.2"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Admin Order",
+      "description": "관리자 주문 관련 API"
     },
-    "servers": [
-      {
-        "url": "http://localhost:8080"
+    {
+      "name": "Auth",
+      "description": "인증/인가 API"
+    },
+    {
+      "name": "Admin Reviews",
+      "description": "관리자 리뷰 관련 API"
+    },
+    {
+      "name": "Admin-User",
+      "description": "관리자 사용자 관리 API"
+    }
+  ],
+  "paths": {
+    "/admin/users/{user_id}/change-password": {
+      "put": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "사용자 비밀번호 변경",
+        "description": "관리자가 특정 사용자의 비밀번호를 직접 변경합니다.",
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "변경할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "비밀번호 변경 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
       }
-    ],
-    "tags": [
-      {
-        "name": "Admin Order",
-        "description": "관리자 주문 관련 API"
+    },
+    "/admin/users/{id}": {
+      "get": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 사용자 상세 조회",
+        "description": "관리자가 특정 사용자의 상세 정보를 조회합니다.",
+        "operationId": "detail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "조회할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
       },
-      {
-        "name": "Auth",
-        "description": "인증/인가 API"
-      },
-      {
-        "name": "Admin Reviews",
-        "description": "관리자 리뷰 관련 API"
-      },
-      {
-        "name": "Admin-User",
-        "description": "관리자 사용자 관리 API"
+      "put": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 사용자 정보 수정",
+        "description": "관리자가 특정 사용자의 정보를 수정합니다.",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "수정할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
       }
-    ],
-    "paths": {
-      "/admin/users/{user_id}/change-password": {
-        "put": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "사용자 비밀번호 변경",
-          "description": "관리자가 특정 사용자의 비밀번호를 직접 변경합니다.",
-          "operationId": "changePassword",
-          "parameters": [
-            {
-              "name": "user_id",
-              "in": "path",
-              "description": "변경할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
+    },
+    "/admin/users/{id}/in-activate": {
+      "put": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 사용자 비활성화",
+        "description": "관리자가 특정 사용자를 비활성화합니다. (소프트 삭제 처리)",
+        "operationId": "inactivateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "비활성화할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
-          ],
-          "requestBody": {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "사용자 비활성화 성공",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserChangePasswordRequest"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "비밀번호 변경 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/users/{id}": {
-        "get": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 사용자 상세 조회",
-          "description": "관리자가 특정 사용자의 상세 정보를 조회합니다.",
-          "operationId": "detail",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "조회할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        },
-        "put": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 사용자 정보 수정",
-          "description": "관리자가 특정 사용자의 정보를 수정합니다.",
-          "operationId": "update",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "수정할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "requestBody": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserUpdateRequest"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "수정 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/users/{id}/in-activate": {
-        "put": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 사용자 비활성화",
-          "description": "관리자가 특정 사용자를 비활성화합니다. (소프트 삭제 처리)",
-          "operationId": "inactivateUser",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "비활성화할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "사용자 비활성화 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/users/{id}/activate": {
-        "put": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 사용자 활성화",
-          "description": "관리자가 비활성화된 특정 사용자를 다시 활성화합니다.",
-          "operationId": "activateUser",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "활성화할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "사용자 활성화 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products/{id}": {
-        "get": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 상세 조회",
-          "description": "상품의 상세 정보를 조회합니다.",
-          "operationId": "detail_1",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        },
-        "put": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 수정",
-          "operationId": "update_1",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "requestBody": {
+          "400": {
+            "description": "검증 실패",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductRequest.Update"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        },
-        "delete": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 삭제",
-          "description": "삭제된 상품은 DB에 DELETED 상태로 남아있지만 조회되지 않습니다.",
-          "operationId": "delete",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/admins/{id}": {
-        "get": {
-          "tags": [
-            "admin-controller"
-          ],
-          "summary": "관리자 상세 조회",
-          "description": "특정 관리자 계정의 상세 정보를 조회합니다.",
-          "operationId": "detailAdmin",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "조회할 관리자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "관리자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           }
         },
-        "put": {
-          "tags": [
-            "admin-controller"
-          ],
-          "summary": "관리자 정보 수정",
-          "description": "관리자가 특정 관리자의 정보를 수정합니다.",
-          "operationId": "updateAdmin",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "수정할 관리자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{id}/activate": {
+      "put": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 사용자 활성화",
+        "description": "관리자가 비활성화된 특정 사용자를 다시 활성화합니다.",
+        "operationId": "activateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "활성화할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
               }
             }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserUpdateRequest"
-                }
-              }
-            },
-            "required": true
           },
-          "responses": {
-            "200": {
-              "description": "수정 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
-            },
-            "404": {
-              "description": "관리자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultDetail"
-                  }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "사용자 활성화 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           }
         },
-        "delete": {
-          "tags": [
-            "admin-controller"
-          ],
-          "summary": "관리자 삭제 (비활성화)",
-          "description": "관리자가 특정 관리자 계정을 비활성화(소프트 삭제)합니다.",
-          "operationId": "deleteAdmin",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "삭제할 관리자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "삭제 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "자기 자신을 삭제할 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "관리자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 상세 조회",
+        "description": "상품의 상세 정보를 조회합니다.",
+        "operationId": "detail_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
           }
-        }
-      },
-      "/auth/signup": {
-        "post": {
-          "tags": [
-            "Auth"
-          ],
-          "summary": "회원 가입",
-          "description": "새로운 사용자를 생성합니다.",
-          "operationId": "create",
-          "requestBody": {
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserCreateRequest"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "201": {
-              "description": "회원 가입 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "잘못된 요청 데이터",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
                 }
               }
             }
-          }
-        }
-      },
-      "/auth/reissue": {
-        "post": {
-          "tags": [
-            "Auth"
-          ],
-          "summary": "토큰 재발급",
-          "operationId": "reissue",
-          "requestBody": {
+          },
+          "400": {
+            "description": "검증 실패",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthRequest.Reissue"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultReissue"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/auth/logout": {
-        "post": {
-          "tags": [
-            "Auth"
-          ],
-          "summary": "로그아웃",
-          "operationId": "logout",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthRequest.Logout"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/auth/login": {
-        "post": {
-          "tags": [
-            "Auth"
-          ],
-          "summary": "로그인",
-          "operationId": "login",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthRequest.Login"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultLogin"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/admin/users/{user_id}/init-password": {
-        "post": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "사용자 비밀번호 초기화",
-          "description": "관리자가 사용자의 비밀번호를 임시 비밀번호로 초기화합니다.",
-          "operationId": "initPassword",
-          "parameters": [
-            {
-              "name": "user_id",
-              "in": "path",
-              "description": "초기화할 사용자 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "비밀번호 초기화 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "사용자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products": {
-        "get": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 검색 및 조회",
-          "description": "전체 상품 목록을 검색 및 조회합니다. 키워드를 입력하지 않으면 전체 상품이 조회됩니다.",
-          "operationId": "search_1",
-          "parameters": [
-            {
-              "name": "keyword",
-              "in": "query",
-              "description": "검색 키워드",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "sortType",
-              "in": "query",
-              "description": "정렬 기준",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "enum": [
-                  "LATEST",
-                  "POPULAR"
-                ]
-              }
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "description": "페이지 번호",
-              "example": 1
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "페이지 크기",
-              "example": 10
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        },
-        "post": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 추가",
-          "operationId": "create_1",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductRequest.Create"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products/{id}/toggle-sold-out": {
-        "post": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 품절",
-          "operationId": "soldOut",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products/{id}/in-activate": {
-        "post": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 비활성화",
-          "operationId": "inActivate",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products/{id}/activate": {
-        "post": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "상품 활성화",
-          "operationId": "activate",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/products/sold-out": {
-        "post": {
-          "tags": [
-            "Product"
-          ],
-          "summary": "다중 상품 품절",
-          "operationId": "soldOutMultiple",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductRequest.Ids"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/orders/{orderId}/change-status": {
-        "post": {
-          "tags": [
-            "Admin Order"
-          ],
-          "summary": "관리자 주문 상태 변경",
-          "description": "관리자가 주문 ID로 특정 주문의 상태를 변경합니다.",
-          "operationId": "changeStatus",
-          "parameters": [
-            {
-              "name": "orderId",
-              "in": "path",
-              "description": "상태를 변경할 주문 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderStatusUpdateRequest"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "상태 변경 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "주문을 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/orders/{orderId}/cancel": {
-        "post": {
-          "tags": [
-            "Admin Order"
-          ],
-          "summary": "주문 취소 요청 처리 (승인/거절)",
-          "description": "사용자의 주문 취소 요청에 대해 승인 또는 거절 처리를 합니다.",
-          "operationId": "decideCancel",
-          "parameters": [
-            {
-              "name": "orderId",
-              "in": "path",
-              "description": "처리할 주문 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderCancelDecisionRequest"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "잘못된 요청이거나 처리할 수 없는 주문 상태입니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "주문을 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "처리 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/admins": {
-        "get": {
-          "tags": [
-            "admin-controller"
-          ],
-          "summary": "관리자 목록 조회",
-          "description": "관리자 목록을 페이징하여 조회합니다.",
-          "operationId": "searchAdmins",
-          "responses": {
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageSearch"
-                  }
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
                 }
               }
             }
           }
         },
-        "post": {
-          "tags": [
-            "admin-controller"
-          ],
-          "operationId": "create_2",
-          "requestBody": {
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 수정",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest.Update"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserCreateRequest"
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
-            },
-            "required": true
+            }
           },
-          "responses": {
-            "201": {
-              "description": "Created",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 삭제",
+        "description": "삭제된 상품은 DB에 DELETED 상태로 남아있지만 조회되지 않습니다.",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/admins/{id}": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "관리자 상세 조회",
+        "description": "특정 관리자 계정의 상세 정보를 조회합니다.",
+        "operationId": "detailAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "조회할 관리자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "관리자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
                 }
               }
             }
           }
         }
       },
-      "/admin/admins/{id}/init-password": {
-        "post": {
-          "tags": [
-            "admin-controller"
-          ],
-          "summary": "관리자 비밀번호 초기화",
-          "description": "관리자가 특정 관리자의 비밀번호를 임시 비밀번호로 초기화하고, 임시 비밀번호를 반환합니다.",
-          "operationId": "initAdminPassword",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "비밀번호를 초기화할 관리자 ID",
-              "required": true,
+      "put": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "관리자 정보 수정",
+        "description": "관리자가 특정 관리자의 정보를 수정합니다.",
+        "operationId": "updateAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "수정할 관리자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
               "schema": {
-                "type": "integer",
-                "format": "int64"
+                "$ref": "#/components/schemas/UserUpdateRequest"
               }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "초기화 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
                 }
               }
-            },
-            "404": {
-              "description": "관리자를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultString"
-                  }
+            }
+          },
+          "404": {
+            "description": "관리자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
                 }
               }
             }
           }
         }
       },
-      "/admin/users/admins/{id}/revoke-admin": {
-        "patch": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 권한 회수",
-          "operationId": "revoke",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
+      "delete": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "관리자 삭제 (비활성화)",
+        "description": "관리자가 특정 관리자 계정을 비활성화(소프트 삭제)합니다.",
+        "operationId": "deleteAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "삭제할 관리자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/users/admins/{id}/grant-admin": {
-        "patch": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 권한 부여",
-          "operationId": "grant",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
+          "400": {
+            "description": "자기 자신을 삭제할 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
           },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/users": {
-        "get": {
-          "tags": [
-            "Admin-User"
-          ],
-          "summary": "관리자 사용자 목록 조회",
-          "description": "관리자가 사용자 목록을 이름으로 검색하고 페이징하여 조회합니다.",
-          "operationId": "search",
-          "parameters": [
-            {
-              "name": "keyword",
-              "in": "query",
-              "description": "검색 키워드(이름)",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "description": "페이지 번호",
-              "example": 1
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "페이지 크기",
-              "example": 10
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageSearch"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageSearch"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageSearch"
-                  }
+          "404": {
+            "description": "관리자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
                 }
               }
             }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/reviews": {
-        "get": {
-          "tags": [
-            "Admin Reviews"
-          ],
-          "summary": "관리자 리뷰 목록 조회",
-          "description": "관리자가 조건(상품명, 유저명, 별점)에 따라 리뷰 목록을 검색하고 페이징 처리된 결과를 받습니다.",
-          "operationId": "getAdminReviews",
-          "parameters": [
-            {
-              "name": "condition",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/ReviewSearchCondition"
-              }
-            },
-            {
-              "name": "pageable",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/Pageable"
-              }
-            },
-            {
-              "name": "condition.productName",
-              "in": "query",
-              "description": "상품명",
-              "example": "테스트상품명"
-            },
-            {
-              "name": "condition.userName",
-              "in": "query",
-              "description": "유저명",
-              "example": "테스트유저"
-            },
-            {
-              "name": "condition.rating",
-              "in": "query",
-              "description": "별점",
-              "example": 5
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "description": "페이지 번호 (0부터 시작)",
-              "example": 0
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "페이지 당 항목 수",
-              "example": 10
-            },
-            {
-              "name": "sort",
-              "in": "query",
-              "description": "정렬 기준 (예: id,desc)",
-              "example": "id,desc"
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageReviewResponse"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageReviewResponse"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "서버 내부 오류",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageReviewResponse"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "성공적인 리뷰 목록 조회",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageReviewResponse"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/orders": {
-        "get": {
-          "tags": [
-            "Admin Order"
-          ],
-          "summary": "관리자 주문 목록 조건별 조회",
-          "description": "관리자가 여러 조건(주문 상태, 구매자 이름 등)으로 주문 목록을 검색하고, 페이징 처리된 결과를 받아봅니다.",
-          "operationId": "search_2",
-          "parameters": [
-            {
-              "name": "condition",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/OrderSearchCondition"
-              }
-            },
-            {
-              "name": "pageable",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/Pageable"
-              }
-            },
-            {
-              "name": "condition.username",
-              "in": "query",
-              "description": "구매자 이름",
-              "example": "testUser"
-            },
-            {
-              "name": "condition.status",
-              "in": "query",
-              "description": "주문 상태",
-              "schema": {
-                "type": "string",
-                "enum": [
-                  "PENDING",
-                  "COMPLETED",
-                  "CANCEL_REQUESTED",
-                  "CANCELLED",
-                  "PREPARING",
-                  "SHIPPING",
-                  "DELIVERED",
-                  "CONFIRMED"
-                ]
-              },
-              "example": "PENDING"
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "description": "페이지 번호 (0부터 시작)",
-              "example": 0
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "페이지 당 항목 수",
-              "example": 10
-            },
-            {
-              "name": "sort",
-              "in": "query",
-              "description": "정렬 기준 (예: id,desc)",
-              "example": "id,desc"
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 내부 오류",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "성공적인 주문 목록 조회",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Page"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "잘못된 요청 파라미터",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/orders/{orderId}": {
-        "get": {
-          "tags": [
-            "Admin Order"
-          ],
-          "summary": "관리자 주문 상세 조회",
-          "description": "관리자가 주문 ID로 특정 주문의 상세 정보를 조회합니다.",
-          "operationId": "getDetail",
-          "parameters": [
-            {
-              "name": "orderId",
-              "in": "path",
-              "description": "조회할 주문 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/AdminDetail"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "주문을 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultAdminDetail"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/orders/cancel": {
-        "get": {
-          "tags": [
-            "Admin Order"
-          ],
-          "summary": "주문 취소 요청 목록 조회",
-          "description": "사용자들이 요청한 주문 취소 건들의 목록을 페이징하여 조회합니다.",
-          "operationId": "getCancelRequests",
-          "parameters": [
-            {
-              "name": "pageable",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/Pageable"
-              }
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "description": "페이지 번호 (0부터 시작)",
-              "example": 0
-            },
-            {
-              "name": "size",
-              "in": "query",
-              "description": "페이지 당 항목 수",
-              "example": 10
-            },
-            {
-              "name": "sort",
-              "in": "query",
-              "description": "정렬 기준 (예: id,desc)",
-              "example": "id,desc"
-            }
-          ],
-          "responses": {
-            "500": {
-              "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "조회 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Page"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "검증 실패",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
-        }
-      },
-      "/admin/reviews/{reviewId}": {
-        "delete": {
-          "tags": [
-            "Admin Reviews"
-          ],
-          "summary": "관리자 리뷰 삭제",
-          "description": "관리자가 문제성 리뷰를 삭제합니다.",
-          "operationId": "deleteReviewByAdmin",
-          "parameters": [
-            {
-              "name": "reviewId",
-              "in": "path",
-              "description": "삭제할 리뷰 ID",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "인증되지 않은 사용자",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "권한 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "200": {
-              "description": "삭제 성공",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "리뷰를 찾을 수 없음",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ApiResultVoid"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer Authentication": []
-            }
-          ]
+          }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "UserChangePasswordRequest": {
-          "required": [
-            "newPassword"
-          ],
-          "type": "object",
-          "properties": {
-            "newPassword": {
-              "type": "string"
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "회원 가입",
+        "description": "새로운 사용자를 생성합니다.",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "회원 가입 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청 데이터",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reissue": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "토큰 재발급",
+        "operationId": "reissue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequest.Reissue"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultReissue"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "로그아웃",
+        "operationId": "logout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequest.Logout"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
             }
           }
         },
-        "ApiResultVoid": {
-          "type": "object",
-          "properties": {
-            "code": {
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "로그인",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequest.Login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{orderId}/change-status": {
+      "post": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "관리자 주문 상태 변경",
+        "description": "관리자가 주문 ID로 특정 주문의 상태를 변경합니다.",
+        "operationId": "changeStatus",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "상태를 변경할 주문 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "상태 변경 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "주문을 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{user_id}/init-password": {
+      "post": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "사용자 비밀번호 초기화",
+        "description": "관리자가 사용자의 비밀번호를 임시 비밀번호로 초기화합니다.",
+        "operationId": "initPassword",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "초기화할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "비밀번호 초기화 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "사용자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/refunds/{refundId}/reject": {
+      "post": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "환불/반품 요청 거절",
+        "description": "사용자의 환불/반품 요청을 거절하고, 사유를 기록합니다.",
+        "operationId": "rejectRefund",
+        "parameters": [
+          {
+            "name": "refundId",
+            "in": "path",
+            "description": "거절할 환불/반품 요청 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRejectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 검색 및 조회",
+        "description": "전체 상품 목록을 검색 및 조회합니다. 키워드를 입력하지 않으면 전체 상품이 조회됩니다.",
+        "operationId": "search_1",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "검색 키워드",
+            "required": false,
+            "schema": {
               "type": "string"
-            },
-            "message": {
+            }
+          },
+          {
+            "name": "sortType",
+            "in": "query",
+            "description": "정렬 기준",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "LATEST",
+                "POPULAR"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호",
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 크기",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 추가",
+        "operationId": "create_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest.Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}/toggle-sold-out": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 품절",
+        "operationId": "soldOut",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}/in-activate": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 비활성화",
+        "operationId": "inActivate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}/activate": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "상품 활성화",
+        "operationId": "activate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/products/sold-out": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "다중 상품 품절",
+        "operationId": "soldOutMultiple",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest.Ids"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{orderId}/refund": {
+      "post": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "환불/반품 요청 승인",
+        "description": "사용자의 환불/반품 요청을 승인 처리합니다.",
+        "operationId": "approveRefund",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "처리할 주문 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{orderId}/cancel": {
+      "post": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "주문 취소 요청 처리 (승인/거절)",
+        "description": "사용자의 주문 취소 요청에 대해 승인 또는 거절 처리를 합니다.",
+        "operationId": "decideCancel",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "처리할 주문 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCancelDecisionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청이거나 처리할 수 없는 주문 상태입니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "주문을 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "처리 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/admins": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "관리자 목록 조회",
+        "description": "관리자 목록을 페이징하여 조회합니다.",
+        "operationId": "searchAdmins",
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-controller"
+        ],
+        "operationId": "create_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/admins/{id}/init-password": {
+      "post": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "관리자 비밀번호 초기화",
+        "description": "관리자가 특정 관리자의 비밀번호를 임시 비밀번호로 초기화하고, 임시 비밀번호를 반환합니다.",
+        "operationId": "initAdminPassword",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "비밀번호를 초기화할 관리자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "초기화 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "관리자를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/admins/{id}/revoke-admin": {
+      "patch": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 권한 회수",
+        "operationId": "revoke",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/users/admins/{id}/grant-admin": {
+      "patch": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 권한 부여",
+        "operationId": "grant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "Admin-User"
+        ],
+        "summary": "관리자 사용자 목록 조회",
+        "description": "관리자가 사용자 목록을 이름으로 검색하고 페이징하여 조회합니다.",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "검색 키워드(이름)",
+            "required": false,
+            "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호",
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 크기",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews": {
+      "get": {
+        "tags": [
+          "Admin Reviews"
+        ],
+        "summary": "관리자 리뷰 목록 조회",
+        "description": "관리자가 조건(상품명, 유저명, 별점)에 따라 리뷰 목록을 검색하고 페이징 처리된 결과를 받습니다.",
+        "operationId": "getAdminReviews",
+        "parameters": [
+          {
+            "name": "condition",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ReviewSearchCondition"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "condition.productName",
+            "in": "query",
+            "description": "상품명",
+            "example": "테스트상품명"
+          },
+          {
+            "name": "condition.userName",
+            "in": "query",
+            "description": "유저명",
+            "example": "테스트유저"
+          },
+          {
+            "name": "condition.rating",
+            "in": "query",
+            "description": "별점",
+            "example": 5
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 당 항목 수",
+            "example": 10
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "정렬 기준 (예: id,desc)",
+            "example": "id,desc"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "성공적인 리뷰 목록 조회",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/refunds": {
+      "get": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "환불/반품 요청 목록 조회",
+        "description": "사용자들이 요청한 환불/반품 건들의 목록을 페이징하여 조회합니다.",
+        "operationId": "getRefunds",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageRefundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageRefundResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "관리자 주문 목록 조건별 조회",
+        "description": "관리자가 여러 조건(주문 상태, 구매자 이름 등)으로 주문 목록을 검색하고, 페이징 처리된 결과를 받아봅니다.",
+        "operationId": "search_2",
+        "parameters": [
+          {
+            "name": "condition",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderSearchCondition"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "condition.username",
+            "in": "query",
+            "description": "구매자 이름",
+            "example": "testUser"
+          },
+          {
+            "name": "condition.status",
+            "in": "query",
+            "description": "주문 상태",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "COMPLETED",
+                "CANCEL_REQUESTED",
+                "CANCELLED",
+                "PREPARING",
+                "SHIPPING",
+                "DELIVERED",
+                "CONFIRMED",
+                "REFUND_REQUESTED",
+                "REFUND_COMPLETED",
+                "RETURN_REQUESTED",
+                "RETURN_COMPLETED"
+              ]
             },
-            "data": {
+            "example": "PENDING"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 당 항목 수",
+            "example": 10
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "정렬 기준 (예: id,desc)",
+            "example": "id,desc"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청 파라미터",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "성공적인 주문 목록 조회",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{orderId}": {
+      "get": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "관리자 주문 상세 조회",
+        "description": "관리자가 주문 ID로 특정 주문의 상세 정보를 조회합니다.",
+        "operationId": "getDetail",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "조회할 주문 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "주문을 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultAdminDetail"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/cancel": {
+      "get": {
+        "tags": [
+          "Admin Order"
+        ],
+        "summary": "주문 취소 요청 목록 조회",
+        "description": "사용자들이 요청한 주문 취소 건들의 목록을 페이징하여 조회합니다.",
+        "operationId": "getCancelRequests",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "페이지 번호 (0부터 시작)",
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "페이지 당 항목 수",
+            "example": 10
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "정렬 기준 (예: id,desc)",
+            "example": "id,desc"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageAdminSummary"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews/{reviewId}": {
+      "delete": {
+        "tags": [
+          "Admin Reviews"
+        ],
+        "summary": "관리자 리뷰 삭제",
+        "description": "관리자가 문제성 리뷰를 삭제합니다.",
+        "operationId": "deleteReviewByAdmin",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "삭제할 리뷰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "인증되지 않은 사용자",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "권한 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리뷰를 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer Authentication": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserChangePasswordRequest": {
+        "required": [
+          "newPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResultVoid": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "UserUpdateRequest": {
+        "required": [
+          "email",
+          "mobile",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "mobile": {
+            "pattern": "^(0\\d{1,2})-(\\d{3,4})-(\\d{4})$",
+            "type": "string"
+          },
+          "email": {
+            "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            "type": "string"
+          }
+        }
+      },
+      "ProductRequest.Update": {
+        "required": [
+          "name",
+          "price",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ApiResultDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Detail"
+          }
+        }
+      },
+      "Detail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "loginId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          }
+        }
+      },
+      "UserCreateRequest": {
+        "required": [
+          "birthday",
+          "email",
+          "gender",
+          "loginId",
+          "mobile",
+          "name",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "loginId": {
+            "type": "string"
+          },
+          "password": {
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^])[A-Za-z\\d!@#$%^]{8,}$",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            "type": "string"
+          },
+          "mobile": {
+            "pattern": "^(0\\d{1,2})-(\\d{3,4})-(\\d{4})$",
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "AuthRequest.Reissue": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResultReissue": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Reissue"
+          }
+        }
+      },
+      "Reissue": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthRequest.Logout": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthRequest.Login": {
+        "required": [
+          "loginId",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "loginId": {
+            "type": "string"
+          },
+          "password": {
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^])[A-Za-z\\d!@#$%^]{8,}$",
+            "type": "string"
+          }
+        }
+      },
+      "ApiResultLogin": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Login"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderStatusUpdateRequest": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "COMPLETED",
+              "CANCEL_REQUESTED",
+              "CANCELLED",
+              "PREPARING",
+              "SHIPPING",
+              "DELIVERED",
+              "CONFIRMED",
+              "REFUND_REQUESTED",
+              "REFUND_COMPLETED",
+              "RETURN_REQUESTED",
+              "RETURN_COMPLETED"
+            ]
+          }
+        }
+      },
+      "ApiResultString": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      },
+      "RefundRejectRequest": {
+        "required": [
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductRequest.Create": {
+        "required": [
+          "name",
+          "price",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ProductRequest.Ids": {
+        "required": [
+          "productIds"
+        ],
+        "type": "object",
+        "properties": {
+          "productIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "OrderCancelDecisionRequest": {
+        "required": [
+          "decision"
+        ],
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVE",
+              "REJECT"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResultPageSearch": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageSearch"
+          }
+        }
+      },
+      "PageSearch": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Search"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Search": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ]
+          }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "empty": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          },
+          "sorted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReviewSearchCondition": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApiResultPageReviewResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageReviewResponse"
+          }
+        }
+      },
+      "PageReviewResponse": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReviewResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ApiResultPageRefundResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageRefundResponse"
+          }
+        }
+      },
+      "PageRefundResponse": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefundResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RefundResponse": {
+        "type": "object",
+        "properties": {
+          "refundId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "refundType": {
+            "type": "string",
+            "enum": [
+              "REFUND",
+              "RETURN"
+            ]
+          },
+          "refundStatus": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "rejectionReason": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AdminSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVATED",
+              "SOLD_OUT",
+              "IN_ACTIVATED",
+              "DELETED"
+            ]
+          }
+        }
+      },
+      "ApiResultPageAdminSummary": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageAdminSummary"
+          }
+        }
+      },
+      "PageAdminSummary": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminSummary"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AdminDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "receiverName": {
+            "type": "string"
+          },
+          "receiverAddress": {
+            "type": "string"
+          },
+          "receiverMobile": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "totalPrice": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "COMPLETED",
+              "CANCEL_REQUESTED",
+              "CANCELLED",
+              "PREPARING",
+              "SHIPPING",
+              "DELIVERED",
+              "CONFIRMED",
+              "REFUND_REQUESTED",
+              "REFUND_COMPLETED",
+              "RETURN_REQUESTED",
+              "RETURN_COMPLETED"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResultAdminDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AdminDetail"
+          }
+        }
+      },
+      "OrderSearchCondition": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "receiverName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "COMPLETED",
+              "CANCEL_REQUESTED",
+              "CANCELLED",
+              "PREPARING",
+              "SHIPPING",
+              "DELIVERED",
+              "CONFIRMED",
+              "REFUND_REQUESTED",
+              "REFUND_COMPLETED",
+              "RETURN_REQUESTED",
+              "RETURN_COMPLETED"
+            ]
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
               "type": "object"
             }
-          }
-        },
-        "UserUpdateRequest": {
-          "required": [
-            "email",
-            "mobile",
-            "name"
-          ],
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "mobile": {
-              "pattern": "^(0\\d{1,2})-(\\d{3,4})-(\\d{4})$",
-              "type": "string"
-            },
-            "email": {
-              "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
-              "type": "string"
-            }
-          }
-        },
-        "ProductRequest.Update": {
-          "required": [
-            "name",
-            "price",
-            "quantity"
-          ],
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "price": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "quantity": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        },
-        "ApiResultDetail": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/Detail"
-            }
-          }
-        },
-        "Detail": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "name": {
-              "type": "string"
-            },
-            "loginId": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "mobile": {
-              "type": "string"
-            }
-          }
-        },
-        "UserCreateRequest": {
-          "required": [
-            "birthday",
-            "email",
-            "gender",
-            "loginId",
-            "mobile",
-            "name",
-            "password"
-          ],
-          "type": "object",
-          "properties": {
-            "loginId": {
-              "type": "string"
-            },
-            "password": {
-              "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^])[A-Za-z\\d!@#$%^]{8,}$",
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
-              "type": "string"
-            },
-            "mobile": {
-              "pattern": "^(0\\d{1,2})-(\\d{3,4})-(\\d{4})$",
-              "type": "string"
-            },
-            "gender": {
-              "type": "string",
-              "enum": [
-                "MALE",
-                "FEMALE"
-              ]
-            },
-            "birthday": {
-              "type": "string",
-              "format": "date"
-            }
-          }
-        },
-        "AuthRequest.Reissue": {
-          "required": [
-            "refreshToken"
-          ],
-          "type": "object",
-          "properties": {
-            "refreshToken": {
-              "type": "string"
-            }
-          }
-        },
-        "ApiResultReissue": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/Reissue"
-            }
-          }
-        },
-        "Reissue": {
-          "type": "object",
-          "properties": {
-            "accessToken": {
-              "type": "string"
-            },
-            "refreshToken": {
-              "type": "string"
-            }
-          }
-        },
-        "AuthRequest.Logout": {
-          "required": [
-            "refreshToken"
-          ],
-          "type": "object",
-          "properties": {
-            "refreshToken": {
-              "type": "string"
-            }
-          }
-        },
-        "AuthRequest.Login": {
-          "required": [
-            "loginId",
-            "password"
-          ],
-          "type": "object",
-          "properties": {
-            "loginId": {
-              "type": "string"
-            },
-            "password": {
-              "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^])[A-Za-z\\d!@#$%^]{8,}$",
-              "type": "string"
-            }
-          }
-        },
-        "ApiResultLogin": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/Login"
-            }
-          }
-        },
-        "Login": {
-          "type": "object",
-          "properties": {
-            "accessToken": {
-              "type": "string"
-            },
-            "refreshToken": {
-              "type": "string"
-            }
-          }
-        },
-        "ApiResultString": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "type": "string"
-            }
-          }
-        },
-        "ProductRequest.Create": {
-          "required": [
-            "name",
-            "price",
-            "quantity"
-          ],
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "price": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "quantity": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        },
-        "ProductRequest.Ids": {
-          "required": [
-            "productIds"
-          ],
-          "type": "object",
-          "properties": {
-            "productIds": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        },
-        "OrderStatusUpdateRequest": {
-          "required": [
-            "status"
-          ],
-          "type": "object",
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "PENDING",
-                "COMPLETED",
-                "CANCEL_REQUESTED",
-                "CANCELLED",
-                "PREPARING",
-                "SHIPPING",
-                "DELIVERED",
-                "CONFIRMED"
-              ]
-            }
-          }
-        },
-        "OrderCancelDecisionRequest": {
-          "required": [
-            "decision"
-          ],
-          "type": "object",
-          "properties": {
-            "decision": {
-              "type": "string",
-              "enum": [
-                "APPROVE",
-                "REJECT"
-              ]
-            },
-            "reason": {
-              "type": "string"
-            }
-          }
-        },
-        "ApiResultPageSearch": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/PageSearch"
-            }
-          }
-        },
-        "PageSearch": {
-          "type": "object",
-          "properties": {
-            "totalPages": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "totalElements": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "first": {
-              "type": "boolean"
-            },
-            "last": {
-              "type": "boolean"
-            },
-            "size": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "content": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Search"
-              }
-            },
-            "number": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "sort": {
-              "$ref": "#/components/schemas/SortObject"
-            },
-            "pageable": {
-              "$ref": "#/components/schemas/PageableObject"
-            },
-            "numberOfElements": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "empty": {
-              "type": "boolean"
-            }
-          }
-        },
-        "PageableObject": {
-          "type": "object",
-          "properties": {
-            "offset": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "sort": {
-              "$ref": "#/components/schemas/SortObject"
-            },
-            "unpaged": {
-              "type": "boolean"
-            },
-            "paged": {
-              "type": "boolean"
-            },
-            "pageNumber": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "pageSize": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        },
-        "Search": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "name": {
-              "type": "string"
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "role": {
-              "type": "string",
-              "enum": [
-                "ADMIN",
-                "USER"
-              ]
-            }
-          }
-        },
-        "SortObject": {
-          "type": "object",
-          "properties": {
-            "empty": {
-              "type": "boolean"
-            },
-            "unsorted": {
-              "type": "boolean"
-            },
-            "sorted": {
-              "type": "boolean"
-            }
-          }
-        },
-        "ReviewSearchCondition": {
-          "type": "object",
-          "properties": {
-            "productName": {
-              "type": "string"
-            },
-            "userName": {
-              "type": "string"
-            },
-            "rating": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        },
-        "Pageable": {
-          "type": "object",
-          "properties": {
-            "page": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            },
-            "size": {
-              "minimum": 1,
-              "type": "integer",
-              "format": "int32"
-            },
-            "sort": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "ApiResultPageReviewResponse": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/PageReviewResponse"
-            }
-          }
-        },
-        "PageReviewResponse": {
-          "type": "object",
-          "properties": {
-            "totalPages": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "totalElements": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "first": {
-              "type": "boolean"
-            },
-            "last": {
-              "type": "boolean"
-            },
-            "size": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "content": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ReviewResponse"
-              }
-            },
-            "number": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "sort": {
-              "$ref": "#/components/schemas/SortObject"
-            },
-            "pageable": {
-              "$ref": "#/components/schemas/PageableObject"
-            },
-            "numberOfElements": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "empty": {
-              "type": "boolean"
-            }
-          }
-        },
-        "ReviewResponse": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "content": {
-              "type": "string"
-            },
-            "rating": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "authorName": {
-              "type": "string"
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        },
-        "AdminSummary": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "name": {
-              "type": "string"
-            },
-            "price": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "stock": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "status": {
-              "type": "string",
-              "enum": [
-                "ACTIVATED",
-                "SOLD_OUT",
-                "IN_ACTIVATED",
-                "DELETED"
-              ]
-            }
-          }
-        },
-        "ApiResultPageAdminSummary": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/PageAdminSummary"
-            }
-          }
-        },
-        "PageAdminSummary": {
-          "type": "object",
-          "properties": {
-            "totalPages": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "totalElements": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "first": {
-              "type": "boolean"
-            },
-            "last": {
-              "type": "boolean"
-            },
-            "size": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "content": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/AdminSummary"
-              }
-            },
-            "number": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "sort": {
-              "$ref": "#/components/schemas/SortObject"
-            },
-            "pageable": {
-              "$ref": "#/components/schemas/PageableObject"
-            },
-            "numberOfElements": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "empty": {
-              "type": "boolean"
-            }
-          }
-        },
-        "AdminDetail": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "receiverName": {
-              "type": "string"
-            },
-            "receiverAddress": {
-              "type": "string"
-            },
-            "receiverMobile": {
-              "type": "string"
-            },
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Item"
-              }
-            },
-            "totalPrice": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "status": {
-              "type": "string",
-              "enum": [
-                "PENDING",
-                "COMPLETED",
-                "CANCEL_REQUESTED",
-                "CANCELLED",
-                "PREPARING",
-                "SHIPPING",
-                "DELIVERED",
-                "CONFIRMED"
-              ]
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "userId": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "username": {
-              "type": "string"
-            }
-          }
-        },
-        "ApiResultAdminDetail": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "data": {
-              "$ref": "#/components/schemas/AdminDetail"
-            }
-          }
-        },
-        "OrderSearchCondition": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string"
-            },
-            "receiverName": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string",
-              "enum": [
-                "PENDING",
-                "COMPLETED",
-                "CANCEL_REQUESTED",
-                "CANCELLED",
-                "PREPARING",
-                "SHIPPING",
-                "DELIVERED",
-                "CONFIRMED"
-              ]
-            }
-          }
-        },
-        "Page": {
-          "type": "object",
-          "properties": {
-            "totalPages": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "totalElements": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "first": {
-              "type": "boolean"
-            },
-            "last": {
-              "type": "boolean"
-            },
-            "size": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "content": {
-              "type": "array",
-              "items": {
-                "type": "object"
-              }
-            },
-            "number": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "sort": {
-              "$ref": "#/components/schemas/SortObject"
-            },
-            "pageable": {
-              "$ref": "#/components/schemas/PageableObject"
-            },
-            "numberOfElements": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "empty": {
-              "type": "boolean"
-            }
-          }
-        },
-        "Item": {
-          "type": "object",
-          "properties": {
-            "productId": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "productName": {
-              "type": "string"
-            },
-            "price": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "quantity": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "lineTotal": {
-              "type": "integer",
-              "format": "int64"
-            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
           }
         }
       },
-      "securitySchemes": {
-        "Bearer Authentication": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
+      "Item": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lineTotal": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
+      }
+    },
+    "securitySchemes": {
+      "Bearer Authentication": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
+}
