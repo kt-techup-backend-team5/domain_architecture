@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테크업 쇼핑몰 API 문서 - Swagger UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+        }
+        
+        /* 커스텀 헤더 */
+        .custom-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .custom-header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        
+        .custom-header p {
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .team-info {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .nav-menu a.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* API 타입 선택 탭 */
+        .api-tabs {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            display: flex;
+            gap: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .tab-button {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .tab-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Swagger UI 커스터마이징 */
+        #swagger-ui {
+            max-width: 1460px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Topbar 숨기기 */
+        .swagger-ui .topbar {
+            display: none;
+        }
+        
+        /* Swagger UI 기본 색상으로 변경 */
+        .swagger-ui .opblock.opblock-post {
+            border-color: #49cc90;
+            background: rgba(73, 204, 144, 0.1);
+        }
+        
+        .swagger-ui .opblock.opblock-post .opblock-summary-method {
+            background: #49cc90;
+        }
+        
+        .swagger-ui .opblock.opblock-get {
+            border-color: #61affe;
+            background: rgba(97, 175, 254, 0.1);
+        }
+        
+        .swagger-ui .opblock.opblock-get .opblock-summary-method {
+            background: #61affe;
+        }
+        
+        .swagger-ui .opblock.opblock-put {
+            border-color: #fca130;
+            background: rgba(252, 161, 48, 0.1);
+        }
+        
+        .swagger-ui .opblock.opblock-put .opblock-summary-method {
+            background: #fca130;
+        }
+        
+        .swagger-ui .opblock.opblock-delete {
+            border-color: #f93e3e;
+            background: rgba(249, 62, 62, 0.1);
+        }
+        
+        .swagger-ui .opblock.opblock-delete .opblock-summary-method {
+            background: #f93e3e;
+        }
+        
+        .swagger-ui .opblock.opblock-patch {
+            border-color: #50e3c2;
+            background: rgba(80, 227, 194, 0.1);
+        }
+        
+        .swagger-ui .opblock.opblock-patch .opblock-summary-method {
+            background: #50e3c2;
+        }
+    </style>
+</head>
+<body>
+    <!-- 커스텀 헤더 -->
+    <div class="custom-header">
+        <h1>🛍️ 테크업 쇼핑몰 API 문서</h1>
+        <p>Shopping Mall RESTful API Documentation</p>
+        <div class="team-info">
+            Team 5 | Java Chip Frappuccino | 팀장 강슬기 | 작성자 강슬기
+        </div>
+    </div>
+    
+    <!-- 네비게이션 메뉴 -->
+    <div class="nav-menu">
+        <a href="index.html">🏗️ 도메인 아키텍처</a>
+        <a href="api-docs.html">📖 API 문서 (ReDoc)</a>
+        <a href="swagger-ui.html" class="active">📋 API 문서 (Swagger UI)</a>
+    </div>
+    
+    <!-- API 타입 선택 탭 -->
+    <div class="api-tabs">
+        <button class="tab-button active" onclick="switchAPI('user')">
+            👤 User API
+        </button>
+        <button class="tab-button" onclick="switchAPI('admin')">
+            🔐 Admin API
+        </button>
+    </div>
+    
+    <!-- Swagger UI -->
+    <div id="swagger-ui"></div>
+    
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-standalone-preset.js"></script>
+    <script>
+        let currentAPI = 'user';
+        
+        function switchAPI(apiType) {
+            currentAPI = apiType;
+            
+            // 탭 활성화 상태 변경
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Swagger UI 다시 렌더링
+            const specUrl = apiType === 'user' ? './swagger_user.json' : './swagger_admin.json';
+            
+            window.ui = SwaggerUIBundle({
+                url: specUrl,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "BaseLayout",
+                defaultModelsExpandDepth: 1,
+                defaultModelExpandDepth: 1,
+                docExpansion: "list",
+                filter: true,
+                filterCaseSensitive: false,
+                showExtensions: true,
+                showCommonExtensions: true,
+                tryItOutEnabled: true,
+                persistAuthorization: true,
+                displayRequestDuration: true,
+                supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch']
+            });
+        }
+        
+        // 초기 로드
+        window.onload = function() {
+            switchAPI('user');
+        };
+    </script>
+</body>
+</html>

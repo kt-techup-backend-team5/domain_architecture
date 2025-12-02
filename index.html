@@ -30,23 +30,60 @@
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
-            text-align: center;
+            padding: 30px 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
             font-weight: 700;
         }
 
         .header p {
-            font-size: 1.2em;
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .team-info {
+            font-size: 0.95em;
             opacity: 0.9;
+            margin-top: 10px;
         }
 
         .content {
             padding: 40px;
+        }
+        
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: -40px -40px 30px -40px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .nav-menu a.active {
+            background: #667eea;
+            color: white;
         }
 
         .architecture-section {
@@ -329,11 +366,21 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏗️ Shopping 도메인 아키텍처</h1>
-            <p>Domain-Driven Design (DDD) 기반 비즈니스 로직 구조</p>
+            <h1>🛍️ 테크업 쇼핑몰 API 문서</h1>
+            <p>Shopping Mall RESTful API Documentation</p>
+            <div class="team-info">
+                Team 5 | Java Chip Frappuccino | 팀장 강슬기 | 작성자 강슬기
+            </div>
         </div>
 
         <div class="content">
+            <!-- 네비게이션 메뉴 추가 -->
+            <div class="nav-menu">
+                <a href="index.html" class="active">🏗️ 도메인 아키텍처</a>
+                <a href="api-docs.html">📖 API 문서 (ReDoc)</a>
+                <a href="swagger-ui.html">📋 API 문서 (Swagger UI)</a>
+            </div>
+            
             <div class="architecture-section">
                 <h2 class="section-title">📦 Bounded Context & Aggregates</h2>
                 
