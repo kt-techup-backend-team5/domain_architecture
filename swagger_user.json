@@ -336,22 +336,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "조회 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Detail"
-                }
-              }
-            }
-          },
           "500": {
             "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Detail"
                 }
               }
             }
@@ -915,6 +915,16 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "결제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                }
+              }
+            }
+          },
           "500": {
             "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
@@ -931,16 +941,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResultVoid"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "결제 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResult"
                 }
               }
             }
@@ -2075,6 +2075,9 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -2085,9 +2088,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           }
         }
       },

@@ -562,6 +562,26 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
           "200": {
             "description": "조회 성공",
             "content": {
@@ -614,8 +634,28 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
           "200": {
             "description": "수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
             "content": {
               "*/*": {
                 "schema": {
@@ -656,8 +696,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "삭제 성공",
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
             "content": {
               "*/*": {
                 "schema": {
@@ -668,6 +708,16 @@
           },
           "400": {
             "description": "자기 자신을 삭제할 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "삭제 성공",
             "content": {
               "*/*": {
                 "schema": {
@@ -1027,6 +1077,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "처리 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1371,8 +1431,28 @@
               }
             }
           },
+          "404": {
+            "description": "요청을 찾을 수 없음",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
           "400": {
             "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "처리 성공",
             "content": {
               "*/*": {
                 "schema": {
@@ -1497,6 +1577,26 @@
         "description": "관리자 목록을 페이징하여 조회합니다.",
         "operationId": "searchAdmins",
         "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageSearch"
+                }
+              }
+            }
+          },
           "200": {
             "description": "조회 성공",
             "content": {
@@ -1525,6 +1625,26 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
           "201": {
             "description": "Created",
             "content": {
@@ -1561,6 +1681,26 @@
         "responses": {
           "200": {
             "description": "초기화 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultString"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
             "content": {
               "*/*": {
                 "schema": {
@@ -1829,6 +1969,26 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "인증되지 않은 사용자",
             "content": {
@@ -1841,16 +2001,6 @@
           },
           "403": {
             "description": "권한 없음",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResultPageReviewResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -1908,6 +2058,16 @@
           },
           "400": {
             "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultPageRefundResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "조회 성공",
             "content": {
               "*/*": {
                 "schema": {
@@ -2202,6 +2362,16 @@
               }
             }
           },
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page"
+                }
+              }
+            }
+          },
           "401": {
             "description": "인증되지 않은 사용자",
             "content": {
@@ -2218,16 +2388,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResultPageAdminSummary"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "조회 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Page"
                 }
               }
             }
@@ -2261,6 +2421,26 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "서버 에러 - 백엔드에 바로 문의 바랍니다.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "검증 실패",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResultVoid"
+                }
+              }
+            }
+          },
           "401": {
             "description": "인증되지 않은 사용자",
             "content": {
@@ -2719,6 +2899,9 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "unpaged": {
+            "type": "boolean"
+          },
           "paged": {
             "type": "boolean"
           },
@@ -2729,9 +2912,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "unpaged": {
-            "type": "boolean"
           }
         }
       },

@@ -125,6 +125,7 @@
         .domain-card.product { border-left-color: #4facfe; }
         .domain-card.review { border-left-color: #43e97b; }
         .domain-card.payment { border-left-color: #fa709a; }
+        .domain-card.refund { border-left-color: #ff6b6b; }
         .domain-card.monitoring { border-left-color: #fddb92; }
 
         .domain-header {
@@ -150,6 +151,7 @@
         .domain-card.product .domain-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .domain-card.review .domain-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         .domain-card.payment .domain-icon { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .domain-card.refund .domain-icon { background: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 100%); }
         .domain-card.monitoring .domain-icon { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
 
         .domain-title {
@@ -506,6 +508,37 @@
                         </div>
                     </div>
 
+                    <!-- 환불/반품 도메인 -->
+                    <div class="domain-card refund">
+                        <div class="domain-header">
+                            <div class="domain-icon">↩️</div>
+                            <div>
+                                <div class="domain-title">환불/반품 도메인</div>
+                                <div class="domain-subtitle">Refund Bounded Context</div>
+                            </div>
+                        </div>
+                        
+                        <div class="aggregate-root">
+                            <div class="aggregate-title">Refund Aggregate</div>
+                            <span class="badge aggregate">Aggregate Root</span>
+                            <div class="entities-list">
+                                <div class="entity-item">Refund (루트 엔티티)</div>
+                            </div>
+                        </div>
+
+                        <div class="business-logic">
+                            <div class="logic-title">핵심 비즈니스 로직</div>
+                            <ul class="logic-list">
+                                <li>환불 요청 (REFUND_REQUESTED)</li>
+                                <li>반품 요청 (RETURN_REQUESTED)</li>
+                                <li>환불/반품 승인 처리</li>
+                                <li>환불/반품 거절 (사유 기록)</li>
+                                <li>재고 복원 처리</li>
+                                <li>주문 상태 변경 관리</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <!-- 리뷰 도메인 -->
                     <div class="domain-card review">
                         <div class="domain-header">
@@ -580,6 +613,9 @@
                         <strong>주문 취소:</strong> PENDING/COMPLETED/PREPARING 상태에서만 취소 요청 가능
                     </div>
                     <div class="constraint-item">
+                        <strong>환불/반품 조건:</strong> COMPLETED/SHIPPING/DELIVERED 상태에서만 환불/반품 요청 가능
+                    </div>
+                    <div class="constraint-item">
                         <strong>재고 관리:</strong> 분산 락(Redisson)을 통한 동시성 제어 필수
                     </div>
                     <div class="constraint-item">
@@ -587,6 +623,9 @@
                     </div>
                     <div class="constraint-item">
                         <strong>배송비:</strong> 고정 배송비 3,000원 적용
+                    </div>
+                    <div class="constraint-item">
+                        <strong>환불/반품 승인:</strong> 관리자만 환불/반품 승인/거절 가능
                     </div>
                 </div>
 
@@ -605,6 +644,9 @@
                         </div>
                         <div class="relationship-item">
                             Order <span class="relationship-arrow">→</span> Payment (1:1)
+                        </div>
+                        <div class="relationship-item">
+                            Order <span class="relationship-arrow">→</span> Refund (1:N)
                         </div>
                         <div class="relationship-item">
                             Product <span class="relationship-arrow">→</span> OrderProduct (1:N)
