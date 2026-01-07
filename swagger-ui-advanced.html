@@ -48,6 +48,35 @@
             margin-top: 10px;
         }
         
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .nav-menu a.active {
+            background: #667eea;
+            color: white;
+        }
+        
         /* 프로젝트 선택 메뉴 */
         .project-menu {
             background: #f8f9fa;
@@ -78,35 +107,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-color: #667eea;
-        }
-        
-        /* 네비게이션 메뉴 */
-        .nav-menu {
-            background: white;
-            padding: 15px 40px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav-menu a {
-            text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-menu a:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .nav-menu a.active {
-            background: #667eea;
-            color: white;
         }
         
         /* API 타입 선택 탭 */
@@ -216,13 +216,13 @@
         <a href="index.html">🏗️ 도메인 아키텍처</a>
         <a href="api-docs.html">📖 API 문서 (ReDoc)</a>
         <a href="swagger-ui-basic.html">📋 API 문서 (Swagger UI) - 기본</a>
-        <a href="swagger-ui.html" class="active">📋 API 문서 (Swagger UI) - 심화</a>
+        <a href="swagger-ui-advanced.html" class="active">📋 API 문서 (Swagger UI) - 심화</a>
     </div>
     
     <!-- 프로젝트 선택 메뉴 -->
     <div class="project-menu">
         <a href="swagger-ui-basic.html">📌 기본 프로젝트</a>
-        <a href="swagger-ui.html" class="active">🚀 심화 프로젝트</a>
+        <a href="swagger-ui-advanced.html" class="active">🚀 심화 프로젝트</a>
     </div>
     
     <!-- API 타입 선택 탭 -->
@@ -252,7 +252,7 @@
             });
             event.target.classList.add('active');
             
-            // Swagger UI 다시 렌더링
+            // Swagger UI 다시 렌더링 (심화 프로젝트 파일 사용)
             const specUrl = apiType === 'user' ? './swagger_user.json' : './swagger_admin.json';
             
             window.ui = SwaggerUIBundle({
@@ -288,3 +288,4 @@
     </script>
 </body>
 </html>
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>테크업 쇼핑몰 API 문서 (심화 프로젝트) - ReDoc</title>
+    <title>테크업 쇼핑몰 API 문서 (기본 프로젝트) - ReDoc</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,700|Roboto:300,400,700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -48,6 +48,35 @@
             margin-top: 10px;
         }
         
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .nav-menu a.active {
+            background: #667eea;
+            color: white;
+        }
+        
         /* 프로젝트 선택 메뉴 */
         .project-menu {
             background: #f8f9fa;
@@ -78,35 +107,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-color: #667eea;
-        }
-        
-        /* 네비게이션 메뉴 */
-        .nav-menu {
-            background: white;
-            padding: 15px 40px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav-menu a {
-            text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-menu a:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .nav-menu a.active {
-            background: #667eea;
-            color: white;
         }
         
         /* API 타입 선택 탭 */
@@ -155,8 +155,8 @@
 <body>
     <!-- 커스텀 헤더 -->
     <div class="custom-header">
-        <h1>🛍️ 테크업 쇼핑몰 API 문서 <span class="project-badge">심화 프로젝트</span></h1>
-        <p>Shopping Mall RESTful API Documentation (Advanced Project)</p>
+        <h1>🛍️ 테크업 쇼핑몰 API 문서 <span class="project-badge">기본 프로젝트</span></h1>
+        <p>Shopping Mall RESTful API Documentation (Basic Project)</p>
         <div class="team-info">
             Team 5 | Java Chip Frappuccino | 팀장 강슬기 | 작성자 강슬기
         </div>
@@ -165,16 +165,16 @@
     <!-- 네비게이션 메뉴 -->
     <div class="nav-menu">
         <a href="index.html">🏗️ 도메인 아키텍처</a>
-        <a href="api-docs-basic.html">📖 API 문서 (ReDoc) - 기본</a>
-        <a href="api-docs.html" class="active">📖 API 문서 (ReDoc) - 심화</a>
+        <a href="api-docs-basic.html" class="active">📖 API 문서 (ReDoc) - 기본</a>
+        <a href="api-docs.html">📖 API 문서 (ReDoc) - 심화</a>
         <a href="swagger-ui-basic.html">📋 API 문서 (Swagger UI) - 기본</a>
         <a href="swagger-ui.html">📋 API 문서 (Swagger UI) - 심화</a>
     </div>
     
     <!-- 프로젝트 선택 메뉴 -->
     <div class="project-menu">
-        <a href="api-docs-basic.html">📌 기본 프로젝트</a>
-        <a href="api-docs.html" class="active">🚀 심화 프로젝트</a>
+        <a href="api-docs-basic.html" class="active">📌 기본 프로젝트</a>
+        <a href="api-docs.html">🚀 심화 프로젝트</a>
     </div>
     
     <!-- API 타입 선택 탭 -->
@@ -203,8 +203,8 @@
             });
             event.target.classList.add('active');
             
-            // ReDoc 다시 렌더링
-            const specUrl = apiType === 'user' ? './swagger_user.json' : './swagger_admin.json';
+            // ReDoc 다시 렌더링 (기본 프로젝트 스펙)
+            const specUrl = apiType === 'user' ? './basic_swagger_user.json' : './basic_swagger_admin.json';
             
             Redoc.init(
                 specUrl,
@@ -234,3 +234,4 @@
     </script>
 </body>
 </html>
+
