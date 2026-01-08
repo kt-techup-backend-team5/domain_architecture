@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping 도메인 아키텍처</title>
+    <title>케클벅스 쇼핑몰 도메인 아키텍처</title>
     <style>
         * {
             margin: 0;
@@ -12,665 +12,1025 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
+            padding: 20px;
         }
 
-        .header {
+        header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.2em;
-            font-weight: 700;
-        }
-
-        .header p {
-            margin: 0 0 15px 0;
-            font-size: 1.1em;
-            opacity: 0.95;
-        }
-        
-        .team-info {
-            font-size: 0.95em;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-
-        .content {
-            padding: 40px;
-        }
-        
-        /* 네비게이션 메뉴 */
-        .nav-menu {
-            background: white;
-            padding: 15px 40px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin: -40px -40px 30px -40px;
-        }
-        
-        .nav-menu a {
-            text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-menu a:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .nav-menu a.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .architecture-section {
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            font-size: 1.8em;
-            color: #333;
+            padding: 40px 0;
             margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
-            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .domains-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
         .domain-card {
             background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 5px solid;
-        }
-
-        .domain-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .domain-card.user { border-left-color: #667eea; }
-        .domain-card.order { border-left-color: #f093fb; }
-        .domain-card.product { border-left-color: #4facfe; }
-        .domain-card.review { border-left-color: #43e97b; }
-        .domain-card.payment { border-left-color: #fa709a; }
-        .domain-card.refund { border-left-color: #ff6b6b; }
-        .domain-card.monitoring { border-left-color: #fddb92; }
-
-        .domain-header {
-            display: flex;
-            align-items: center;
+            border-left: 4px solid #667eea;
+            padding: 20px;
             margin-bottom: 20px;
+            border-radius: 4px;
         }
 
-        .domain-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-right: 15px;
-            color: white;
-        }
-
-        .domain-card.user .domain-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .domain-card.order .domain-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .domain-card.product .domain-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .domain-card.review .domain-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .domain-card.payment .domain-icon { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .domain-card.refund .domain-icon { background: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 100%); }
-        .domain-card.monitoring .domain-icon { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
-
-        .domain-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .domain-subtitle {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .aggregate-root {
+        .attribute-list {
             background: white;
             padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #e9ecef;
-        }
-
-        .aggregate-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .aggregate-title::before {
-            content: "🎯";
-            margin-right: 8px;
-        }
-
-        .entities-list {
-            margin-top: 10px;
-            padding-left: 15px;
-        }
-
-        .entity-item {
-            font-size: 0.95em;
-            color: #6c757d;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .entity-item::before {
-            content: "▸";
-            margin-right: 8px;
-            color: #667eea;
-        }
-
-        .business-logic {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-
-        .logic-title {
-            font-size: 1em;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .logic-title::before {
-            content: "⚡";
-            margin-right: 8px;
-        }
-
-        .logic-list {
-            list-style: none;
-            padding-left: 15px;
-        }
-
-        .logic-list li {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .logic-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #43e97b;
-            font-weight: bold;
-        }
-
-        .constraints-section {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .constraints-title {
-            font-size: 1.3em;
-            color: #856404;
-            margin-bottom: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-        }
-
-        .constraints-title::before {
-            content: "⚠️";
-            margin-right: 10px;
-        }
-
-        .constraint-item {
-            background: white;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            color: #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .constraint-item strong {
-            color: #d9534f;
-        }
-
-        .relationships-section {
-            background: #e7f3ff;
-            border-left: 5px solid #4facfe;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .relationships-title {
-            font-size: 1.3em;
-            color: #004085;
-            margin-bottom: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-        }
-
-        .relationships-title::before {
-            content: "🔗";
-            margin-right: 10px;
-        }
-
-        .relationship-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .relationship-item {
-            background: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            color: #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .relationship-arrow {
-            color: #667eea;
-            font-weight: bold;
-            margin: 0 5px;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 768px) {
-            .domains-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .relationship-grid {
-                grid-template-columns: 1fr;
-            }
+            border-radius: 4px;
+            margin: 10px 0;
         }
 
         .badge {
             display: inline-block;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 12px;
             font-size: 0.85em;
             font-weight: 600;
-            margin-right: 5px;
-            margin-top: 5px;
+            margin-right: 8px;
+            margin-bottom: 8px;
         }
 
-        .badge.aggregate { background: #d4edff; color: #0056b3; }
-        .badge.entity { background: #d4f4dd; color: #155724; }
-        .badge.vo { background: #fff3cd; color: #856404; }
+        .badge-primary {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-success {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .badge-warning {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .badge-info {
+            background: #e1f5fe;
+            color: #0288d1;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .flow-step {
+            background: white;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .flow-step::before {
+            content: '→';
+            position: absolute;
+            left: -20px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 5px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .highlight {
+            background: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #ffd700;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <h1>☕ 케클벅스 쇼핑몰 도메인 아키텍처</h1>
+            <p>Spring Boot 기반 E-Commerce 백엔드 심화 프로젝트</p>
+        </div>
+    </header>
+
     <div class="container">
-        <div class="header">
-            <h1>🛍️ 테크업 쇼핑몰 API 문서</h1>
-            <p>Shopping Mall RESTful API Documentation</p>
-            <div class="team-info">
-                Team 5 | Java Chip Frappuccino | 팀장 강슬기 | 작성자 강슬기
+        <!-- 목차 -->
+        <div class="toc section">
+            <h3>📑 목차</h3>
+            <ul>
+                <li><a href="#core-domain">1. 핵심 도메인</a></li>
+                <li><a href="#payment-domain">2. 결제 도메인</a></li>
+                <li><a href="#point-domain">3. 포인트 도메인</a></li>
+                <li><a href="#refund-domain">4. 환불/반품 도메인</a></li>
+                <li><a href="#review-domain">5. 리뷰/문의 도메인</a></li>
+                <li><a href="#cart-domain">6. 장바구니/찜 도메인</a></li>
+                <li><a href="#address-domain">7. 배송지 도메인</a></li>
+                <li><a href="#support-domain">8. 지원 도메인</a></li>
+                <li><a href="#business-rules">9. 주요 비즈니스 규칙</a></li>
+                <li><a href="#ai-features">10. AI 기능</a></li>
+                <li><a href="#concurrency">11. 동시성 제어</a></li>
+                <li><a href="#changes">12. 주요 변경사항</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. 핵심 도메인 -->
+        <div class="section" id="core-domain">
+            <h2>1. 핵심 도메인</h2>
+
+            <div class="domain-card">
+                <h3>1.1 User (사용자)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, loginId, password, name, email, mobile, gender, birthday, role, deleted, deletedAt</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>👥 역할</h4>
+                    <span class="badge badge-primary">SUPER_ADMIN</span>
+                    <span class="badge badge-primary">ADMIN</span>
+                    <span class="badge badge-primary">CUSTOMER</span>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>Order (1:N)</li>
+                        <li>Point (1:1)</li>
+                        <li>Review (1:N)</li>
+                        <li>Question (1:N)</li>
+                        <li>Answer (1:N)</li>
+                        <li>CartItem (1:N)</li>
+                        <li>Wishlist (1:N)</li>
+                        <li>Address (1:N)</li>
+                        <li>History (1:N)</li>
+                        <li>VisitStat (1:N)</li>
+                        <li>Review - Blinder (1:N)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>1.2 Product (상품)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, name, price, stock, viewCount, description, status, thumbnailImgUrl, detailImgUrl, productAnalysis</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔄 상태</h4>
+                    <span class="badge badge-success">ACTIVATED</span>
+                    <span class="badge badge-warning">SOLD_OUT</span>
+                    <span class="badge badge-warning">IN_ACTIVATED</span>
+                    <span class="badge badge-warning">DELETED</span>
+                </div>
+                <div class="highlight">
+                    <h4>🤖 AI 분석정보</h4>
+                    <ul>
+                        <li><strong>gender</strong>: 타겟 성별</li>
+                        <li><strong>ageTarget</strong>: 타겟 연령대</li>
+                        <li><strong>reason</strong>: 분석 근거</li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>OrderProduct (1:N)</li>
+                        <li>Review (1:N)</li>
+                        <li>Question (1:N)</li>
+                        <li>CartItem (1:N)</li>
+                        <li>Wishlist (1:N)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>1.3 Order (주문)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, receiver (임베디드), deliveryRequest, status, previousStatus, paymentId, usedPoints, cancelDecisionReason, userCancelReason, deliveredAt</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔄 상태 (7단계)</h4>
+                    <div class="flow-box">
+                        <div class="flow-step">ORDER_CREATED - 주문 생성</div>
+                        <div class="flow-step">ORDER_ACCEPTED - 결제 완료</div>
+                        <div class="flow-step">ORDER_PREPARING - 배송 준비</div>
+                        <div class="flow-step">ORDER_SHIPPING - 배송 중</div>
+                        <div class="flow-step">ORDER_DELIVERED - 배송 완료</div>
+                        <div class="flow-step">ORDER_CONFIRMED - 구매 확정</div>
+                        <div class="flow-step">ORDER_CANCELLED - 주문 취소</div>
+                    </div>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                        <li>OrderProduct (1:N)</li>
+                        <li>Payment (1:1)</li>
+                        <li>Refund (1:N)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>1.4 OrderProduct (주문상품)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, quantity</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>Order (N:1)</li>
+                        <li>Product (N:1)</li>
+                        <li>Review (1:1) - 구매확정 후 리뷰 작성</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="content">
-            <!-- 네비게이션 메뉴 추가 -->
-            <div class="nav-menu">
-                <a href="index.html" class="active">🏗️ 도메인 아키텍처</a>
-                <a href="api-docs.html">📖 API 문서 (ReDoc)</a>
-                <a href="swagger-ui.html">📋 API 문서 (Swagger UI)</a>
+        <!-- 2. 결제 도메인 -->
+        <div class="section" id="payment-domain">
+            <h2>2. 결제 도메인</h2>
+
+            <div class="domain-card">
+                <h3>2.1 Payment (결제)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, deliveryFee, originalPrice, discountPrice, finalPrice, status</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔄 상태</h4>
+                    <span class="badge badge-warning">PAYMENT_PENDING</span>
+                    <span class="badge badge-success">PAYMENT_SUCCESS</span>
+                    <span class="badge badge-warning">PAYMENT_FAILED</span>
+                    <span class="badge badge-warning">PAYMENT_CANCELLED</span>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>Order (1:1)</li>
+                        <li>PaymentType (N:1)</li>
+                    </ul>
+                </div>
             </div>
-            
-            <div class="architecture-section">
-                <h2 class="section-title">📦 Bounded Context & Aggregates</h2>
-                
-                <div class="domains-grid">
-                    <!-- 사용자 도메인 -->
-                    <div class="domain-card user">
-                        <div class="domain-header">
-                            <div class="domain-icon">👤</div>
-                            <div>
-                                <div class="domain-title">사용자 도메인</div>
-                                <div class="domain-subtitle">User Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">User Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">User (루트 엔티티)</div>
-                            </div>
-                        </div>
 
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>회원가입 (중복 검증)</li>
-                                <li>로그인/로그아웃 (JWT)</li>
-                                <li>비밀번호 변경</li>
-                                <li>회원 탈퇴 (Soft Delete)</li>
-                                <li>권한 관리 (USER/ADMIN)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 주문 도메인 -->
-                    <div class="domain-card order">
-                        <div class="domain-header">
-                            <div class="domain-icon">📋</div>
-                            <div>
-                                <div class="domain-title">주문 도메인</div>
-                                <div class="domain-subtitle">Order Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">Order Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">Order (루트 엔티티)</div>
-                                <div class="entity-item">OrderProduct (하위 엔티티)</div>
-                                <div class="entity-item">Receiver (Value Object)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>주문 생성 (재고 차감 + 분산 락)</li>
-                                <li>주문 취소 요청 (previous_status 저장)</li>
-                                <li>취소 승인/거절 (관리자)</li>
-                                <li>상태 변경 워크플로우</li>
-                                <li>배송지 정보 관리</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 상품 도메인 -->
-                    <div class="domain-card product">
-                        <div class="domain-header">
-                            <div class="domain-icon">📦</div>
-                            <div>
-                                <div class="domain-title">상품 도메인</div>
-                                <div class="domain-subtitle">Product Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">Product Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">Product (루트 엔티티)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>재고 관리 (동시성 제어)</li>
-                                <li>상태 관리 (ACTIVATED/SOLD_OUT)</li>
-                                <li>조회수 증가 (Redis 캐싱)</li>
-                                <li>상품 검색 및 필터링</li>
-                                <li>품절 처리 (toggle-sold-out)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 결제 도메인 -->
-                    <div class="domain-card payment">
-                        <div class="domain-header">
-                            <div class="domain-icon">💳</div>
-                            <div>
-                                <div class="domain-title">결제 도메인</div>
-                                <div class="domain-subtitle">Payment Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">Payment Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">Payment (루트 엔티티)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>결제 처리 (CASH/CARD/PAY)</li>
-                                <li>가격 계산 (할인, 배송비)</li>
-                                <li>최종 금액 산정</li>
-                                <li>주문-결제 연동 (1:1)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 환불/반품 도메인 -->
-                    <div class="domain-card refund">
-                        <div class="domain-header">
-                            <div class="domain-icon">↩️</div>
-                            <div>
-                                <div class="domain-title">환불/반품 도메인</div>
-                                <div class="domain-subtitle">Refund Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">Refund Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">Refund (루트 엔티티)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>환불 요청 (REFUND_REQUESTED)</li>
-                                <li>반품 요청 (RETURN_REQUESTED)</li>
-                                <li>환불/반품 승인 처리</li>
-                                <li>환불/반품 거절 (사유 기록)</li>
-                                <li>재고 복원 처리</li>
-                                <li>주문 상태 변경 관리</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 리뷰 도메인 -->
-                    <div class="domain-card review">
-                        <div class="domain-header">
-                            <div class="domain-icon">⭐</div>
-                            <div>
-                                <div class="domain-title">리뷰 도메인</div>
-                                <div class="domain-subtitle">Review Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">Review Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">Review (루트 엔티티)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>리뷰 작성 (CONFIRMED 상태만)</li>
-                                <li>중복 리뷰 방지 (order_product_id UNIQUE)</li>
-                                <li>별점 관리 (1-5)</li>
-                                <li>리뷰 수정/삭제 (Soft Delete)</li>
-                                <li>상품별 리뷰 조회</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 모니터링 도메인 -->
-                    <div class="domain-card monitoring">
-                        <div class="domain-header">
-                            <div class="domain-icon">📊</div>
-                            <div>
-                                <div class="domain-title">모니터링 도메인</div>
-                                <div class="domain-subtitle">Monitoring Bounded Context</div>
-                            </div>
-                        </div>
-                        
-                        <div class="aggregate-root">
-                            <div class="aggregate-title">통계/이력 Aggregate</div>
-                            <span class="badge aggregate">Aggregate Root</span>
-                            <div class="entities-list">
-                                <div class="entity-item">VisitStat (방문 통계)</div>
-                                <div class="entity-item">History (이력 관리)</div>
-                            </div>
-                        </div>
-
-                        <div class="business-logic">
-                            <div class="logic-title">핵심 비즈니스 로직</div>
-                            <ul class="logic-list">
-                                <li>방문 통계 수집 (비동기)</li>
-                                <li>사용자 행동 추적</li>
-                                <li>이력 관리 (로그인, 주문 등)</li>
-                                <li>IP/User-Agent 기록</li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="domain-card">
+                <h3>2.2 PaymentType (결제수단)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, typeCode, name, description, isActive</p>
                 </div>
-
-                <!-- 제약사항 -->
-                <div class="constraints-section">
-                    <div class="constraints-title">비즈니스 제약사항 (Business Constraints)</div>
-                    <div class="constraint-item">
-                        <strong>리뷰 제약:</strong> 한 주문 상품당 리뷰 1개만 작성 가능 (order_product_id UNIQUE)
-                    </div>
-                    <div class="constraint-item">
-                        <strong>리뷰 작성 조건:</strong> 구매 확정(CONFIRMED) 상태에서만 리뷰 작성 가능
-                    </div>
-                    <div class="constraint-item">
-                        <strong>주문 취소:</strong> PENDING/COMPLETED/PREPARING 상태에서만 취소 요청 가능
-                    </div>
-                    <div class="constraint-item">
-                        <strong>환불/반품 조건:</strong> COMPLETED/SHIPPING/DELIVERED 상태에서만 환불/반품 요청 가능
-                    </div>
-                    <div class="constraint-item">
-                        <strong>재고 관리:</strong> 분산 락(Redisson)을 통한 동시성 제어 필수
-                    </div>
-                    <div class="constraint-item">
-                        <strong>Soft Delete:</strong> User, Review는 물리 삭제 금지 (deleted=true 처리)
-                    </div>
-                    <div class="constraint-item">
-                        <strong>배송비:</strong> 고정 배송비 3,000원 적용
-                    </div>
-                    <div class="constraint-item">
-                        <strong>환불/반품 승인:</strong> 관리자만 환불/반품 승인/거절 가능
-                    </div>
-                </div>
-
-                <!-- 도메인 간 관계 -->
-                <div class="relationships-section">
-                    <div class="relationships-title">도메인 간 관계 (Domain Relationships)</div>
-                    <div class="relationship-grid">
-                        <div class="relationship-item">
-                            User <span class="relationship-arrow">→</span> Order (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            User <span class="relationship-arrow">→</span> Review (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            Order <span class="relationship-arrow">→</span> OrderProduct (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            Order <span class="relationship-arrow">→</span> Payment (1:1)
-                        </div>
-                        <div class="relationship-item">
-                            Order <span class="relationship-arrow">→</span> Refund (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            Product <span class="relationship-arrow">→</span> OrderProduct (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            Product <span class="relationship-arrow">→</span> Review (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            OrderProduct <span class="relationship-arrow">→</span> Review (1:1)
-                        </div>
-                        <div class="relationship-item">
-                            User <span class="relationship-arrow">→</span> VisitStat (1:N)
-                        </div>
-                        <div class="relationship-item">
-                            User <span class="relationship-arrow">→</span> History (1:N)
-                        </div>
+                <div class="highlight">
+                    <h4>💡 특징</h4>
+                    <p>DB 기반 동적 결제수단 관리 (기존 enum에서 발전)</p>
+                    <div class="attribute-list">
+                        <h4>기본 결제수단</h4>
+                        <span class="badge badge-info">CASH</span>
+                        <span class="badge badge-info">CARD</span>
+                        <span class="badge badge-info">PAY</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="footer">
-            <p style="color: #333; font-weight: 600; font-size: 1.1em;">Team 5 | Java Chip Frappuccino | 팀장 강슬기 | 작성자 강슬기</p>
+        <!-- 3. 포인트 도메인 -->
+        <div class="section" id="point-domain">
+            <h2>3. 포인트 도메인</h2>
+
+            <div class="domain-card">
+                <h3>3.1 Point (포인트)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, availablePoints, <strong>version</strong> (낙관적 락)</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (1:1)</li>
+                        <li>PointHistory (1:N)</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>💰 포인트 규칙</h4>
+                    <ul>
+                        <li>구매 확정 시 실결제액의 <strong>5% 적립</strong></li>
+                        <li>리뷰 작성 시 <strong>100P 적립</strong></li>
+                        <li>최소 사용 금액: <strong>1,000P</strong></li>
+                        <li>리뷰 블라인드 시 100P 회수</li>
+                        <li>주문 취소/환불 시 자동 복구</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>3.2 PointHistory (포인트 이력)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, type, changeAmount, remainingPoints, description, relatedId, relatedType</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>📊 포인트 타입 (8가지)</h4>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <h4 style="color: #4caf50; margin-top: 0;">✅ 적립 (4종)</h4>
+                            <ul style="margin-left: 15px;">
+                                <li><strong>CREDITED_ORDER</strong><br>구매 확정</li>
+                                <li><strong>CREDITED_REVIEW</strong><br>리뷰 작성</li>
+                                <li><strong>CREDITED_PAYMENT_FAILURE</strong><br>결제 실패 복구</li>
+                                <li><strong>CREDITED_ADMIN</strong><br>관리자 수동</li>
+                            </ul>
+                        </div>
+                        <div class="feature-item">
+                            <h4 style="color: #f44336; margin-top: 0;">❌ 차감/회수 (4종)</h4>
+                            <ul style="margin-left: 15px;">
+                                <li><strong>USED</strong><br>주문 사용</li>
+                                <li><strong>RETRIEVED_REFUND</strong><br>환불 회수</li>
+                                <li><strong>RETRIEVED_REVIEW_BLIND</strong><br>리뷰 블라인드</li>
+                                <li><strong>RETRIEVED_ADMIN</strong><br>관리자 차감</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 환불/반품 도메인 -->
+        <div class="section" id="refund-domain">
+            <h2>4. 환불/반품 도메인</h2>
+
+            <div class="domain-card">
+                <h3>4.1 Refund (환불/반품)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, type, status, reason, rejectionReason</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🏷️ 타입</h4>
+                    <span class="badge badge-warning">REFUND (환불)</span>
+                    <span class="badge badge-info">RETURN (반품)</span>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔄 상태 (4단계)</h4>
+                    <div class="flow-box">
+                        <div class="flow-step">REFUND_REQUESTED - 요청</div>
+                        <div class="flow-step">REFUND_APPROVED - 승인</div>
+                        <div class="flow-step">REFUND_REJECTED - 거절</div>
+                        <div class="flow-step">REFUND_COMPLETED - 완료</div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <h4>⚙️ 승인 시 자동 처리</h4>
+                    <ul>
+                        <li>✅ 재고 복원</li>
+                        <li>💰 적립 포인트 회수 (구매확정 5%)</li>
+                        <li>💳 사용 포인트 복구</li>
+                        <li>📊 상태 변경: REFUND_COMPLETED</li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>Order (N:1)</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>💡 특징</h4>
+                    <p>Order와 독립적으로 상태 관리 (Order 상태 영향 없음)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 리뷰/문의 도메인 -->
+        <div class="section" id="review-domain">
+            <h2>5. 리뷰/문의 도메인</h2>
+
+            <div class="domain-card">
+                <h3>5.1 Review (리뷰)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, content, rating, isBlinded, blindReason, blindedAt, deleted, deletedAt</p>
+                </div>
+                <div class="highlight">
+                    <h4>🔒 제약사항</h4>
+                    <ul>
+                        <li>구매 확정 후 작성 가능</li>
+                        <li>중복 작성 불가 (orderProductId 기준)</li>
+                        <li>블라인드 기능 (관리자만)</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>💰 포인트 연동</h4>
+                    <ul>
+                        <li>리뷰 작성 시: <strong>100P 적립</strong></li>
+                        <li>리뷰 블라인드 시: <strong>100P 회수</strong></li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1) - 작성자</li>
+                        <li>Product (N:1)</li>
+                        <li>OrderProduct (1:1)</li>
+                        <li>User (N:1) - 블라인더 (관리자)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>5.2 ReviewSummary (리뷰 요약)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, productId, reviewCountUsed, lastReviewIdUsed, summary, pros, cons, keywords, model, promptVersion, generatedAt, expiresAt</p>
+                </div>
+                <div class="highlight">
+                    <h4>🤖 AI 기반 요약</h4>
+                    <ul>
+                        <li>OpenAI 기반 리뷰 요약 생성</li>
+                        <li>24시간 캐시</li>
+                        <li>자동 갱신</li>
+                        <li>장점/단점/키워드 추출</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>5.3 Question (상품 문의)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, content, isPublic, status</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔄 상태</h4>
+                    <span class="badge badge-warning">PENDING (대기)</span>
+                    <span class="badge badge-success">ANSWERED (답변 완료)</span>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1) - 질문자</li>
+                        <li>Product (N:1)</li>
+                        <li>Answer (1:1)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>5.4 Answer (문의 답변)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, content</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>Question (1:1)</li>
+                        <li>User (N:1) - 답변자 (관리자)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 장바구니/찜 도메인 -->
+        <div class="section" id="cart-domain">
+            <h2>6. 장바구니/찜 도메인</h2>
+
+            <div class="domain-card">
+                <h3>6.1 CartItem (장바구니)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, quantity</p>
+                </div>
+                <div class="highlight">
+                    <h4>🔒 제약사항</h4>
+                    <p><strong>(userId, productId) UNIQUE</strong> - 동일 상품 중복 불가</p>
+                </div>
+                <div class="highlight">
+                    <h4>💡 특징</h4>
+                    <p>비회원 장바구니 병합 지원 (로그인 시)</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                        <li>Product (N:1)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>6.2 Wishlist (찜)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong></p>
+                </div>
+                <div class="highlight">
+                    <h4>🔒 제약사항</h4>
+                    <p><strong>(userId, productId) UNIQUE</strong> - 동일 상품 중복 불가</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                        <li>Product (N:1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 배송지 도메인 -->
+        <div class="section" id="address-domain">
+            <h2>7. 배송지 도메인</h2>
+
+            <div class="domain-card">
+                <h3>7.1 Address (배송지)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, alias, name, mobile, address, detailAddress, zipcode, isDefault, deleted, deletedAt</p>
+                </div>
+                <div class="highlight">
+                    <h4>🔒 제약사항</h4>
+                    <ul>
+                        <li>최대 <strong>10개</strong> 등록 가능</li>
+                        <li>최소 <strong>1개</strong>의 기본 배송지 유지</li>
+                        <li>기본 배송지 단독 해제 불가</li>
+                        <li>비관적 락 사용</li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. 지원 도메인 -->
+        <div class="section" id="support-domain">
+            <h2>8. 지원 도메인</h2>
+
+            <div class="domain-card">
+                <h3>8.1 VisitStat (방문 통계)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, ip, userAgent, userId, visitedAt</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>📊 용도</h4>
+                    <p>사용자 방문 기록 추적 및 통계 분석</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1) - 선택적 (비회원 가능)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>8.2 History (히스토리)</h3>
+                <div class="attribute-list">
+                    <h4>📋 속성</h4>
+                    <p><strong>id</strong>, type, content, userId</p>
+                </div>
+                <div class="attribute-list">
+                    <h4>📝 타입</h4>
+                    <span class="badge badge-info">ORDER_CREATE</span>
+                    <span class="badge badge-success">LOGIN</span>
+                    <span class="badge badge-warning">LOGOUT</span>
+                    <span class="badge badge-primary">PASSWORD_CHANGE</span>
+                </div>
+                <div class="attribute-list">
+                    <h4>🔗 관계</h4>
+                    <ul>
+                        <li>User (N:1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. 주요 비즈니스 규칙 -->
+        <div class="section" id="business-rules">
+            <h2>9. 주요 비즈니스 규칙</h2>
+
+            <div class="domain-card">
+                <h3>9.1 주문 생성 흐름</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 주문 생성 (ORDER_CREATED)</div>
+                    <div class="flow-step">2. 포인트 사용 (옵션, 최소 1,000P)</div>
+                    <div class="flow-step">3. 재고 차감 (분산 락)</div>
+                    <div class="flow-step">4. 장바구니 정리 (CART 타입만)</div>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>9.2 결제 흐름 (이벤트 기반)</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 결제 처리 (Payment)</div>
+                    <div class="flow-step">2-A. 결제 성공 이벤트 → Order 상태 변경 (ORDER_ACCEPTED)</div>
+                    <div class="flow-step">2-B. 결제 실패 이벤트 → Order 취소 + 포인트 복구</div>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>9.3 주문 취소 흐름</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 사용자 취소 요청 → 즉시 ORDER_CANCELLED</div>
+                    <div class="flow-step">2. 재고 복원 (자동)</div>
+                    <div class="flow-step">3. 사용 포인트 복구 (자동)</div>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>9.4 환불/반품 흐름</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 사용자 환불/반품 요청 (REFUND_REQUESTED)</div>
+                    <div class="flow-step">2. 관리자 승인/거절</div>
+                    <div class="flow-step">3-A. 승인 시:</div>
+                    <div class="flow-step" style="margin-left: 30px;">→ 재고 복원</div>
+                    <div class="flow-step" style="margin-left: 30px;">→ 적립 포인트 회수 (5%)</div>
+                    <div class="flow-step" style="margin-left: 30px;">→ 사용 포인트 복구</div>
+                    <div class="flow-step" style="margin-left: 30px;">→ 상태: REFUND_COMPLETED</div>
+                    <div class="flow-step">3-B. 거절 시: REFUND_REJECTED</div>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>9.5 구매 확정 흐름 (이벤트 기반)</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 사용자 구매 확정 (ORDER_DELIVERED → ORDER_CONFIRMED)</div>
+                    <div class="flow-step">2. 구매 확정 이벤트 발행</div>
+                    <div class="flow-step">3. 포인트 적립 (실결제액의 5%)</div>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>9.6 리뷰 작성 흐름 (이벤트 기반)</h3>
+                <div class="flow-box">
+                    <div class="flow-step">1. 구매 확정 후 작성 가능</div>
+                    <div class="flow-step">2. 중복 작성 불가 (orderProductId 기준)</div>
+                    <div class="flow-step">3. 리뷰 작성 이벤트 → 100P 적립</div>
+                    <div class="flow-step">4. 리뷰 블라인드 이벤트 → 100P 회수</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. AI 기능 -->
+        <div class="section" id="ai-features">
+            <h2>10. AI 기능</h2>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3 style="margin-top: 0;">🎯 상품 분석</h3>
+                    <ul>
+                        <li>AI 기반 타겟 성별/연령대 자동 분석</li>
+                        <li>VectorStore 기반 유사 상품 검색</li>
+                        <li>분석 근거 제공</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h3 style="margin-top: 0;">🛍️ 상품 추천</h3>
+                    <ul>
+                        <li>자연어 질문 분석</li>
+                        <li>성별/연령/가격대/키워드 필터링</li>
+                        <li>VectorStore 기반 순위 정렬</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h3 style="margin-top: 0;">📝 리뷰 요약</h3>
+                    <ul>
+                        <li>OpenAI 기반 리뷰 요약</li>
+                        <li>장점/단점/키워드 추출</li>
+                        <li>24시간 캐시</li>
+                        <li>자동 갱신</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h3 style="margin-top: 0;">💬 챗봇</h3>
+                    <ul>
+                        <li>주문 내역 기반 컨텍스트</li>
+                        <li>쇼핑몰 FAQ 자동 응답</li>
+                        <li>실시간 문의 처리</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. 동시성 제어 -->
+        <div class="section" id="concurrency">
+            <h2>11. 동시성 제어</h2>
+
+            <div class="domain-card">
+                <h3>11.1 분산 락 (Redisson)</h3>
+                <div class="attribute-list">
+                    <h4>🎯 적용 대상</h4>
+                    <ul>
+                        <li>재고 차감/증가 (상품 단위)</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>🔑 Lock Key</h4>
+                    <code>STOCK:{productId}</code>
+                </div>
+                <div class="attribute-list">
+                    <h4>📌 사용 시점</h4>
+                    <ul>
+                        <li>주문 생성 시 재고 차감</li>
+                        <li>주문 취소 시 재고 복원</li>
+                        <li>환불/반품 승인 시 재고 복원</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>11.2 낙관적 락 (Optimistic Lock)</h3>
+                <div class="attribute-list">
+                    <h4>🎯 적용 대상</h4>
+                    <ul>
+                        <li><strong>Point</strong> (version 필드)</li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>📌 사용 시점</h4>
+                    <ul>
+                        <li>포인트 적립/사용/회수 시</li>
+                        <li>동시 수정 충돌 방지</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-card">
+                <h3>11.3 비관적 락 (Pessimistic Lock)</h3>
+                <div class="attribute-list">
+                    <h4>🎯 적용 대상</h4>
+                    <ul>
+                        <li><strong>Address</strong> (사용자 배송지 목록)</li>
+                        <li><strong>CartItem</strong> (장바구니 수정)</li>
+                    </ul>
+                </div>
+                <div class="attribute-list">
+                    <h4>📌 사용 시점</h4>
+                    <ul>
+                        <li>배송지 추가/수정/삭제</li>
+                        <li>기본 배송지 변경</li>
+                        <li>장바구니 수량 변경</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. 주요 변경사항 -->
+        <div class="section" id="changes">
+            <h2>12. 주요 변경사항 (기본 → 심화)</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>카테고리</th>
+                        <th>변경 내용</th>
+                        <th>상세</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="7"><strong>✅ 추가된 도메인</strong></td>
+                        <td>Point, PointHistory</td>
+                        <td>포인트 시스템 (8가지 타입)</td>
+                    </tr>
+                    <tr>
+                        <td>Refund</td>
+                        <td>환불/반품 독립 관리</td>
+                    </tr>
+                    <tr>
+                        <td>PaymentType</td>
+                        <td>DB 기반 동적 결제수단</td>
+                    </tr>
+                    <tr>
+                        <td>CartItem, Wishlist</td>
+                        <td>장바구니/찜 기능</td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td>배송지 관리 (최대 10개)</td>
+                    </tr>
+                    <tr>
+                        <td>Question, Answer</td>
+                        <td>상품 문의 시스템</td>
+                    </tr>
+                    <tr>
+                        <td>ReviewSummary</td>
+                        <td>AI 리뷰 요약</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><strong>⬆️ 강화된 기능</strong></td>
+                        <td>이벤트 기반 아키텍처</td>
+                        <td>결제, 포인트, 리뷰</td>
+                    </tr>
+                    <tr>
+                        <td>AI 기능 통합</td>
+                        <td>상품 분석, 추천, 요약, 챗봇</td>
+                    </tr>
+                    <tr>
+                        <td>동시성 제어</td>
+                        <td>분산/낙관적/비관적 락</td>
+                    </tr>
+                    <tr>
+                        <td>상태 관리 세분화</td>
+                        <td>Order 7단계, Refund 4단계</td>
+                    </tr>
+                    <tr>
+                        <td><strong>❌ 삭제</strong></td>
+                        <td>CANCEL_REQUESTED 상태</td>
+                        <td>즉시 취소로 변경</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <h3>🎯 주요 개선 포인트</h3>
+                <ul>
+                    <li><strong>이벤트 기반 아키텍처</strong>: 비즈니스 로직 분리, 확장성 향상</li>
+                    <li><strong>AI 통합</strong>: 상품 분석, 추천, 리뷰 요약 자동화</li>
+                    <li><strong>동시성 제어</strong>: 데이터 무결성 보장</li>
+                    <li><strong>포인트 시스템</strong>: 고객 충성도 향상</li>
+                    <li><strong>환불/반품 관리</strong>: CS 처리 효율화</li>
+                </ul>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <div class="container">
+            <p>🚀 KT TechUp Program - Team 5 "Java Chip Frappuccino"</p>
+            <p>케클벅스 쇼핑몰 백엔드 심화 프로젝트 | Spring Boot + Redis + AI</p>
+        </div>
+    </footer>
 </body>
 </html>
